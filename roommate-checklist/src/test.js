@@ -6,58 +6,6 @@ import AgeInput from "./ageInput";
 import HakbunInput from "./hakbunInput";
 import GenderSelect from "./gender";
 import TermSelect from "./term";
-import WakeUp from "./wakeUp";
-
-const slideIn = keyframes`
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  position: relative;
-`;
-
-const Div = styled.div`
-  background-color: white;
-  width: 300px;
-  padding: 20px;
-  margin: 20px 0;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  animation: ${({ isVisible }) => (isVisible ? slideIn : "none")} 0.5s forwards;
-  z-index: ${({ isVisible }) => (isVisible ? 1 : -1)};
-  opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-`;
-
-const Button = styled.button`
-  margin: 5px;
-  padding: 10px 20px;
-  border: none;
-  background-color: ${(props) => (props.isSelected ? "#8A1601" : "#fcfcfc")};
-  color: ${(props) => (props.isSelected ? "#FFFFFF" : "#000000")};
-  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  transition: background-size 0.3s ease-out, box-shadow 0.3s,
-    background-color 0.3s;
-  cursor: pointer;
-  &:focus {
-    outline: none;
-    transition: background-size 0.3s ease-out, box-shadow 0.3s,
-      background-color 0.3s;
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
-  }
-`;
 
 const Input = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -69,29 +17,12 @@ const Input = () => {
     () => localStorage.getItem("gender") || "여자"
   );
   const [age, setAge] = useState(() => localStorage.getItem("age") || "95");
-  const [name, setName] = useState(() => {
-    const savedName = localStorage.getItem("name");
-    return savedName !== null ? savedName.replace(/&#10;/g, "\n") : "";
-  });
-
+  const [name, setName] = useState(() => localStorage.getItem("name") || "");
   const [hakbun, setHakbun] = useState(
     () => localStorage.getItem("hakbun") || "15"
   );
 
-  const [bedTime, setBedTime] = useState(
-    () => localStorage.getItem("bedTime") || "22:00"
-  );
-
-  const [wakeUpTime, setWakeUpTime] = useState(
-    () => localStorage.getItem("wakeUpTime") || "07:00"
-  );
-
   const resultRef = useRef(null);
-
-  const handleNameChange = (e) => {
-    const value = e.target.value;
-    setName(value);
-  };
 
   useEffect(() => {
     localStorage.setItem("selectedMonth", selectedMonth);
@@ -110,8 +41,7 @@ const Input = () => {
   }, [age]);
 
   useEffect(() => {
-    const encodedName = name.replace(/\n/g, "&#10;");
-    localStorage.setItem("name", encodedName);
+    localStorage.setItem("name", name);
   }, [name]);
 
   const handleNext = () => {
@@ -125,23 +55,12 @@ const Input = () => {
   };
 
   const handleReset = () => {
-    if (window.confirm("입력된 정보를 초기화할까요?")) {
+    if (window.confirm("정말로 초기화하시겠습니까?")) {
       localStorage.clear();
-      localStorage.setItem("selectedMonth", "4개월");
+      localStorage.setItem("selectedMonth", "12개월");
       localStorage.setItem("gender", "남자");
       localStorage.setItem("age", "95");
       localStorage.setItem("hakbun", "15");
-      localStorage.setItem("wakeUpTime", "07:00");
-      localStorage.setItem("bedTime", "22:00");
-      localStorage.removeItem("name");
-
-      setSelectedMonth("4개월");
-      setGender("남자");
-      setAge("95");
-      setName("");
-      setHakbun("15");
-      setWakeUpTime("07:00");
-      setBedTime("22:00");
       setCurrentStep(0);
     }
   };
@@ -179,25 +98,24 @@ const Input = () => {
         <button onClick={handleNext}>다음</button>
       </Div>
       <Div isVisible={currentStep === 1}>
-        <h3>자기소개를 해주세요!</h3>
-        <WakeUp />
+        <h3>기본 정보</h3>
         <button onClick={handleNext}>다음</button>
       </Div>
       <Div isVisible={currentStep === 2}>
-        <h3>제 룸메는 이랬으면 좋겠어요!</h3>
-        <button onClick={handleNext}>다음</button>
-      </Div>
-      <Div isVisible={currentStep === 3}>
-        <h3>룸메님, 이건 지켜 주세요!</h3>
-        <textarea
-          placeholder="없다면 넘어가도 무방해요."
+        <p>이름을 입력해주세요:</p>
+        <input
           type="text"
           value={name}
-          onChange={handleNameChange}
+          onChange={(e) => setName(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <button onClick={handleNext}>다음</button>
       </Div>
-
+      <Div isVisible={currentStep === 3}>
+        <h3>개월 수를 선택해주세요:</h3>
+        <div></div>
+        <button onClick={handleNext}>다음</button>
+      </Div>
       <div
         className="result"
         ref={resultRef}
@@ -210,25 +128,8 @@ const Input = () => {
             <p>나이: {localStorage.age}</p>
             <p>학번: {localStorage.hakbun}</p>
             <p>선택한 개월: {localStorage.selectedMonth}</p>
-            <p>
-              {localStorage.bedTime}시에 자고, {localStorage.wakeUpTime}시에
-              일어나요
-            </p>
-            <p
-              dangerouslySetInnerHTML={{
-                __html: localStorage.name ? "룸메님 이건 지켜주세요!" : "",
-              }}
-            ></p>
-            <p
-              dangerouslySetInnerHTML={{
-                __html: localStorage.name
-                  ? localStorage.name.replace(/&#10;/g, "<br />")
-                  : "",
-              }}
-            ></p>
-
             <button onClick={handleSave}>저장하기</button>
-            <button onClick={handleReset}>처음으로</button>
+            <button onClick={handleReset}>처음으로</button>{" "}
           </Div>
         )}
       </div>

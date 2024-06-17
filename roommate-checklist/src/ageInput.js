@@ -1,11 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./ageInput.css";
 
 const AgeInput = () => {
   const ageInputRef = useRef(null);
-  const [age, setAge] = useState("05");
+  const [age, setAge] = useState("95");
   const [animate, setAnimate] = useState("");
   const [clickedButton, setClickedButton] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem("age", age);
+  }, [age]);
 
   const triggerAnimation = (animType) => {
     setAnimate(animType);

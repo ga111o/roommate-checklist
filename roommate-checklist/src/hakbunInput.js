@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./hakbunInput.css";
 
 const HakbunInput = () => {
@@ -6,6 +6,10 @@ const HakbunInput = () => {
   const [hakbun, setHakbun] = useState("15");
   const [animate, setAnimate] = useState("");
   const [clickedButton, setClickedButton] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem("hakbun", hakbun);
+  }, [hakbun]);
 
   const triggerAnimation = (animType) => {
     setAnimate(animType);
