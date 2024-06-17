@@ -15,3 +15,7 @@
 .smoke span.fade-out {
   opacity: 0;
 }
+
+.output {
+  font-size: 16px;
+}

@@ -40,9 +40,19 @@ const SmokingStatus = () => {
     if (count === 0) {
       return "☐";
     } else if (count % 2 !== 0) {
-      return "🚬";
+      return (
+        <div>
+          <div>🚬</div>
+          <div className="output">흡연을 해요.</div>
+        </div>
+      );
     } else {
-      return "🚭";
+      return (
+        <div>
+          <div>🚭</div>
+          <div className="output">흡연을 하지 않아요.</div>
+        </div>
+      );
     }
   };
 
