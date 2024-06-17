@@ -29,3 +29,41 @@
 .box.visible {
   transform: translateX(100%);
 }
+.innerDetailsInput p {
+  margin-right: 10px;
+}
+
+.innerDetailsInput {
+  margin-bottom: 10px;
+}
+
+/* .innerDetailsInput input {
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.03);
+  padding: 10px;
+  border: none;
+  outline: none;
+  background-image: linear-gradient(
+    to bottom,
+    transparent,
+    transparent calc(100% - 1px),
+    rgba(0, 0, 0, 0.5) 1px
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  background-position: left bottom;
+  transition: background-size 0.3s ease-out, box-shadow 0.3s,
+    background-color 0.3s;
+} */
+
+/* .innerDetailsInput input:focus {
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+  background-size: 0 1px;
+  background-color: rgba(0, 0, 0, 0);
+} */
+
+.innerDetailsInput {
+  display: flex;
+  height: auto;
+  vertical-align: middle;
+}
