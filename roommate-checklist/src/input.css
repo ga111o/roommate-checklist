@@ -68,3 +68,9 @@ textarea:focus {
   height: auto;
   vertical-align: middle;
 }
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}

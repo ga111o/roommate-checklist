@@ -7,6 +7,11 @@ import HakbunInput from "./hakbunInput";
 import GenderSelect from "./gender";
 import TermSelect from "./term";
 import WakeUp from "./wakeUp";
+import MbtiSelector from "./mbti";
+import SmokingStatus from "./smoking";
+import Clean from "./clean";
+import Alarm from "./alarm";
+import WhenSleep from "./whenSleep";
 
 const slideIn = keyframes`
   from {
@@ -78,6 +83,22 @@ const Input = () => {
     () => localStorage.getItem("hakbun") || "15"
   );
 
+  const [smokingStatus, setSmokingStatus] = useState(
+    () => localStorage.getItem("smokingStatus") || "0"
+  );
+
+  const [whenSleep, setWhenSleep] = useState(
+    () => localStorage.getItem("whenSleep") || "0"
+  );
+
+  const [clean, setClean] = useState(
+    () => localStorage.getItem("clean") || "0"
+  );
+
+  const [alarm, setAlarm] = useState(
+    () => localStorage.getItem("alarm") || "0"
+  );
+
   const [bedTime, setBedTime] = useState(
     () => localStorage.getItem("bedTime") || "22:00"
   );
@@ -124,6 +145,25 @@ const Input = () => {
     }
   };
 
+  const handlePrev = () => {
+    if (currentStep >= 0) {
+      setCurrentStep((prevStep) => prevStep - 1);
+    } else {
+      alert(
+        `성별: ${gender}, 나이: ${age}, 이름: ${name}, 선택한 개월: ${selectedMonth}`
+      );
+    }
+  };
+
+  const getMbtiFormat = () => {
+    const mbti = localStorage.getItem("mbti");
+    if (mbti) {
+      const mbtiObj = JSON.parse(mbti);
+      return `${mbtiObj.ie}${mbtiObj.sn}${mbtiObj.tf}${mbtiObj.jp}`;
+    }
+    return "";
+  };
+
   const handleReset = () => {
     if (window.confirm("입력된 정보를 초기화할까요?")) {
       localStorage.clear();
@@ -133,6 +173,10 @@ const Input = () => {
       localStorage.setItem("hakbun", "15");
       localStorage.setItem("wakeUpTime", "07:00");
       localStorage.setItem("bedTime", "22:00");
+      localStorage.setItem("smokingStatus", "0");
+      localStorage.setItem("whenSleep", "0");
+      localStorage.setItem("clean", "0");
+      localStorage.setItem("alarm", "0");
       localStorage.removeItem("name");
 
       setSelectedMonth("4개월");
@@ -140,6 +184,10 @@ const Input = () => {
       setAge("95");
       setName("");
       setHakbun("15");
+      setSmokingStatus("0");
+      setWhenSleep("0");
+      setClean("0");
+      setAlarm("0");
       setWakeUpTime("07:00");
       setBedTime("22:00");
       setCurrentStep(0);
@@ -175,16 +223,29 @@ const Input = () => {
         <GenderSelect />
         <AgeInput />
         <HakbunInput />
+        <MbtiSelector />
 
         <button onClick={handleNext}>다음</button>
       </Div>
       <Div isVisible={currentStep === 1}>
         <h3>자기소개를 해주세요!</h3>
         <WakeUp />
+        <div className="row">
+          <SmokingStatus />
+          <Clean />
+        </div>
+        <div className="row">
+          <Alarm />
+          <WhenSleep />
+        </div>
+
+        <button onClick={handlePrev}>이전</button>
         <button onClick={handleNext}>다음</button>
       </Div>
       <Div isVisible={currentStep === 2}>
         <h3>제 룸메는 이랬으면 좋겠어요!</h3>
+
+        <button onClick={handlePrev}>이전</button>
         <button onClick={handleNext}>다음</button>
       </Div>
       <Div isVisible={currentStep === 3}>
@@ -195,6 +256,8 @@ const Input = () => {
           value={name}
           onChange={handleNameChange}
         />
+
+        <button onClick={handlePrev}>이전</button>
         <button onClick={handleNext}>다음</button>
       </Div>
 
@@ -209,6 +272,8 @@ const Input = () => {
             <p>성별: {localStorage.gender}</p>
             <p>나이: {localStorage.age}</p>
             <p>학번: {localStorage.hakbun}</p>
+            <p>흡연 여부: {localStorage.smokingStatus}</p>
+            <p>mbti: {getMbtiFormat()}</p>
             <p>선택한 개월: {localStorage.selectedMonth}</p>
             <p>
               {localStorage.bedTime}시에 자고, {localStorage.wakeUpTime}시에
@@ -226,7 +291,7 @@ const Input = () => {
                   : "",
               }}
             ></p>
-
+            <button onClick={handlePrev}>이전</button>
             <button onClick={handleSave}>저장하기</button>
             <button onClick={handleReset}>처음으로</button>
           </Div>
