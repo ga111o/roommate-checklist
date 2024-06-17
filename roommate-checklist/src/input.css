@@ -37,7 +37,7 @@
   margin-bottom: 10px;
 }
 
-/* .innerDetailsInput input {
+textarea {
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
   background-color: rgba(0, 0, 0, 0.03);
   padding: 10px;
@@ -54,13 +54,13 @@
   background-position: left bottom;
   transition: background-size 0.3s ease-out, box-shadow 0.3s,
     background-color 0.3s;
-} */
+}
 
-/* .innerDetailsInput input:focus {
+textarea:focus {
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
   background-size: 0 1px;
   background-color: rgba(0, 0, 0, 0);
-} */
+}
 
 .innerDetailsInput {
   display: flex;

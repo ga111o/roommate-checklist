@@ -4,6 +4,8 @@ import html2canvas from "html2canvas";
 import "./input.css";
 import AgeInput from "./ageInput";
 import HakbunInput from "./hakbunInput";
+import GenderSelect from "./gender";
+import TermSelect from "./term";
 
 const slideIn = keyframes`
   from {
@@ -60,15 +62,26 @@ const Input = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const [selectedMonth, setSelectedMonth] = useState(
-    localStorage.getItem("selectedMonth") || ""
+    () => localStorage.getItem("selectedMonth") || "12개월"
   );
-  const [gender, setGender] = useState(localStorage.getItem("gender") || "");
-  const [age, setAge] = useState(localStorage.getItem("age") || "");
-  const [name, setName] = useState(localStorage.getItem("name") || "");
+  const [gender, setGender] = useState(
+    () => localStorage.getItem("gender") || "여자"
+  );
+  const [age, setAge] = useState(() => localStorage.getItem("age") || "95");
+  const [name, setName] = useState(() => {
+    const savedName = localStorage.getItem("name");
+    return savedName ? savedName.replace(/&#10;/g, "\n") : "";
+  });
+  const [hakbun, setHakbun] = useState(
+    () => localStorage.getItem("hakbun") || "15"
+  );
 
-  const ageInputRef = useRef(null);
-  const nameInputRef = useRef(null);
   const resultRef = useRef(null);
+
+  const handleNameChange = (e) => {
+    const value = e.target.value;
+    setName(value);
+  };
 
   useEffect(() => {
     localStorage.setItem("selectedMonth", selectedMonth);
@@ -79,20 +92,17 @@ const Input = () => {
   }, [gender]);
 
   useEffect(() => {
+    localStorage.setItem("hakbun", hakbun);
+  }, [hakbun]);
+
+  useEffect(() => {
     localStorage.setItem("age", age);
   }, [age]);
 
   useEffect(() => {
-    localStorage.setItem("name", name);
+    const encodedName = name.replace(/\n/g, "&#10;");
+    localStorage.setItem("name", encodedName);
   }, [name]);
-
-  useEffect(() => {
-    if (currentStep === 1) {
-      ageInputRef.current.focus();
-    } else if (currentStep === 2) {
-      nameInputRef.current.focus();
-    }
-  }, [currentStep]);
 
   const handleNext = () => {
     if (currentStep < 4) {
@@ -105,12 +115,18 @@ const Input = () => {
   };
 
   const handleReset = () => {
-    if (window.confirm("정말로 초기화하시겠습니까?")) {
+    if (window.confirm("입력된 정보를 초기화할까요?")) {
       localStorage.clear();
-      setSelectedMonth("");
-      setGender("");
-      setAge("");
+      localStorage.setItem("selectedMonth", "4개월");
+      localStorage.setItem("gender", "남자");
+      localStorage.setItem("age", "95");
+      localStorage.setItem("hakbun", "15");
+
+      setSelectedMonth("4개월");
+      setGender("남자");
+      setAge("95");
       setName("");
+      setHakbun("15");
       setCurrentStep(0);
     }
   };
@@ -140,93 +156,32 @@ const Input = () => {
     <Container>
       <Div isVisible={currentStep === 0}>
         <h3>자기소개를 해주세요!</h3>
-        <div className="innerDetailsInput">
-          <Button
-            isSelected={selectedMonth === "4개월"}
-            onClick={() => setSelectedMonth("4개월")}
-          >
-            4개월
-          </Button>
-          <Button
-            isSelected={selectedMonth === "6개월"}
-            onClick={() => setSelectedMonth("6개월")}
-          >
-            6개월
-          </Button>
-          <Button
-            isSelected={selectedMonth === "12개월"}
-            onClick={() => setSelectedMonth("12개월")}
-          >
-            12개월
-          </Button>
-        </div>
-
-        <div className="innerDetailsInput">
-          <Button
-            isSelected={gender === "남자"}
-            onClick={() => setGender("남자")}
-          >
-            👨남자
-          </Button>
-          <Button
-            isSelected={gender === "여자"}
-            onClick={() => setGender("여자")}
-          >
-            👧여자
-          </Button>
-        </div>
+        <TermSelect />
+        <GenderSelect />
         <AgeInput />
         <HakbunInput />
 
         <button onClick={handleNext}>다음</button>
       </Div>
       <Div isVisible={currentStep === 1}>
-        <h3>기본 정보</h3>
-        <input
-          ref={ageInputRef}
-          type="number"
-          value={age}
-          onChange={(e) => setAge(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <p>년생</p>
+        <h3>자기소개를 해주세요!</h3>
         <button onClick={handleNext}>다음</button>
       </Div>
       <Div isVisible={currentStep === 2}>
-        <p>이름을 입력해주세요:</p>
-        <input
-          ref={nameInputRef}
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
+        <h3>제 룸메는 이랬으면 좋겠어요!</h3>
         <button onClick={handleNext}>다음</button>
       </Div>
       <Div isVisible={currentStep === 3}>
-        <h3>개월 수를 선택해주세요:</h3>
-        <div>
-          <Button
-            isSelected={selectedMonth === "4개월"}
-            onClick={() => setSelectedMonth("4개월")}
-          >
-            4개월
-          </Button>
-          <Button
-            isSelected={selectedMonth === "6개월"}
-            onClick={() => setSelectedMonth("6개월")}
-          >
-            6개월
-          </Button>
-          <Button
-            isSelected={selectedMonth === "12개월"}
-            onClick={() => setSelectedMonth("12개월")}
-          >
-            12개월
-          </Button>
-        </div>
+        <h3>룸메님, 이건 지켜 주세요!</h3>
+        <textarea
+          placeholder="없다면 넘어가도 무방해요."
+          type="text"
+          value={name}
+          onChange={handleNameChange}
+        />
         <button onClick={handleNext}>다음</button>
       </Div>
+
       <div
         className="result"
         ref={resultRef}
@@ -235,12 +190,18 @@ const Input = () => {
         {currentStep === 4 && (
           <Div isVisible={true}>
             <p>저장된 정보:</p>
-            <p>성별: {gender}</p>
-            <p>나이: {age}</p>
-            <p>이름: {name}</p>
-            <p>선택한 개월: {selectedMonth}</p>
+            <p>성별: {localStorage.gender}</p>
+            <p>나이: {localStorage.age}</p>
+            <p>학번: {localStorage.hakbun}</p>
+            <p>선택한 개월: {localStorage.selectedMonth}</p>
+            <p>룸메님 이건 지켜주세요!</p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: localStorage.name.replace(/&#10;/g, "<br />"),
+              }}
+            ></p>
             <button onClick={handleSave}>저장하기</button>
-            <button onClick={handleReset}>처음으로</button>{" "}
+            <button onClick={handleReset}>처음으로</button>
           </Div>
         )}
       </div>
