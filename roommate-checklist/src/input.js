@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 
 const slideIn = keyframes`
@@ -37,26 +37,79 @@ const Div = styled.div`
 
 const Input = () => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [gender, setGender] = useState(localStorage.getItem("gender") || "");
+  const [age, setAge] = useState(localStorage.getItem("age") || "");
+  const [name, setName] = useState(localStorage.getItem("name") || "");
+
+  const genderInputRef = useRef(null);
+  const ageInputRef = useRef(null);
+  const nameInputRef = useRef(null);
+
+  useEffect(() => {
+    localStorage.setItem("gender", gender);
+  }, [gender]);
+
+  useEffect(() => {
+    localStorage.setItem("age", age);
+  }, [age]);
+
+  useEffect(() => {
+    localStorage.setItem("name", name);
+  }, [name]);
+
+  useEffect(() => {
+    if (currentStep === 0) {
+      genderInputRef.current.focus();
+    } else if (currentStep === 1) {
+      ageInputRef.current.focus();
+    } else if (currentStep === 2) {
+      nameInputRef.current.focus();
+    }
+  }, [currentStep]);
 
   const handleNext = () => {
     setCurrentStep((prevStep) => prevStep + 1);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleNext();
+    }
   };
 
   return (
     <Container>
       <Div isVisible={currentStep >= 0}>
         <p>성별을 입력해주세요:</p>
-        <input type="text" />
+        <input
+          ref={genderInputRef}
+          type="text"
+          value={gender}
+          onChange={(e) => setGender(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
         <button onClick={handleNext}>다음</button>
       </Div>
       <Div isVisible={currentStep >= 1}>
         <p>나이를 입력해주세요:</p>
-        <input type="number" />
+        <input
+          ref={ageInputRef}
+          type="number"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
         <button onClick={handleNext}>다음</button>
       </Div>
       <Div isVisible={currentStep >= 2}>
         <p>이름을 입력해주세요:</p>
-        <input type="text" />
+        <input
+          ref={nameInputRef}
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
         <button onClick={handleNext}>완료</button>
       </Div>
     </Container>
