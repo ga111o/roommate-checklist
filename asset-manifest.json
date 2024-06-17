@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/roommate-checklist/static/css/main.3a6e6167.css",
+    "main.js": "/roommate-checklist/static/js/main.5a56eab3.js",
+    "static/js/453.cde8952c.chunk.js": "/roommate-checklist/static/js/453.cde8952c.chunk.js",
+    "index.html": "/roommate-checklist/index.html",
+    "main.3a6e6167.css.map": "/roommate-checklist/static/css/main.3a6e6167.css.map",
+    "main.5a56eab3.js.map": "/roommate-checklist/static/js/main.5a56eab3.js.map",
+    "453.cde8952c.chunk.js.map": "/roommate-checklist/static/js/453.cde8952c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3a6e6167.css",
+    "static/js/main.5a56eab3.js"
+  ]
+}
