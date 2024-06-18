@@ -15,7 +15,7 @@ import WhenSleep from "./whenSleep";
 
 const slideIn = keyframes`
   from {
-    transform: translateX(-100%);
+    transform: translateX(100%);
   }
   to {
     transform: translateX(0);
@@ -43,25 +43,7 @@ const Div = styled.div`
   animation: ${({ isVisible }) => (isVisible ? slideIn : "none")} 0.5s forwards;
   z-index: ${({ isVisible }) => (isVisible ? 1 : -1)};
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-`;
-
-const Button = styled.button`
-  margin: 5px;
-  padding: 10px 20px;
-  border: none;
-  background-color: ${(props) => (props.isSelected ? "#8A1601" : "#fcfcfc")};
-  color: ${(props) => (props.isSelected ? "#FFFFFF" : "#000000")};
-  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  transition: background-size 0.3s ease-out, box-shadow 0.3s,
-    background-color 0.3s;
-  cursor: pointer;
-  &:focus {
-    outline: none;
-    transition: background-size 0.3s ease-out, box-shadow 0.3s,
-      background-color 0.3s;
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
-  }
+  height: 450px;
 `;
 
 const Input = () => {
@@ -224,8 +206,12 @@ const Input = () => {
         <AgeInput />
         <HakbunInput />
         <MbtiSelector />
-
-        <button onClick={handleNext}>다음</button>
+        <div className="nextNprevButton">
+          <div style={{ width: "40%" }}></div>
+          <button className="Button" onClick={handleNext}>
+            🔜
+          </button>
+        </div>
       </Div>
       <Div isVisible={currentStep === 1}>
         <h3>자기소개를 해주세요!</h3>
@@ -238,15 +224,22 @@ const Input = () => {
           <Alarm />
           <WhenSleep />
         </div>
-
-        <button onClick={handlePrev}>이전</button>
-        <button onClick={handleNext}>다음</button>
+        <div className="nextNprevButton">
+          <button className="Button" onClick={handlePrev}>
+            🔙
+          </button>
+          <button className="Button" onClick={handleNext}>
+            🔜
+          </button>
+        </div>
       </Div>
       <Div isVisible={currentStep === 2}>
         <h3>제 룸메는 이랬으면 좋겠어요!</h3>
 
-        <button onClick={handlePrev}>이전</button>
-        <button onClick={handleNext}>다음</button>
+        <div className="nextNprevButton">
+          <button onClick={handlePrev}>🔙</button>
+          <button onClick={handleNext}>🔜</button>
+        </div>
       </Div>
       <Div isVisible={currentStep === 3}>
         <h3>룸메님, 이건 지켜 주세요!</h3>
@@ -256,9 +249,10 @@ const Input = () => {
           value={name}
           onChange={handleNameChange}
         />
-
-        <button onClick={handlePrev}>이전</button>
-        <button onClick={handleNext}>다음</button>
+        <div className="nextNprevButton">
+          <button onClick={handlePrev}>🔙</button>
+          <button onClick={handleNext}>🔜</button>
+        </div>
       </Div>
 
       <div

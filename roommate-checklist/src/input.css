@@ -74,3 +74,40 @@ textarea:focus {
   flex-direction: row;
   justify-content: space-around;
 }
+
+.Button {
+  margin: 5px;
+  border: none;
+  background-color: #fcfcfc;
+  color: #000000;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  transition: background-size 0.3s ease-out, box-shadow 0.3s,
+    background-color 0.3s;
+  cursor: pointer;
+  font-size: 30px;
+  margin-top: 20px;
+  width: 40%;
+}
+
+.Button:focus {
+  outline: none;
+  transition: background-size 0.3s ease-out, box-shadow 0.3s,
+    background-color 0.3s;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
+}
+
+.Button.selected {
+  background-color: #8a1601;
+  color: #ffffff;
+}
+
+.nextNprevButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  position: absolute;
+  bottom: 0;
+  width: 302px;
+  padding: 10px 0; /* 버튼에 패딩을 추가하여 더 나은 시각적 배치를 제공 */
+}
