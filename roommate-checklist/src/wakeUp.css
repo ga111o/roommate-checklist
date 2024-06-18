@@ -1,4 +1,3 @@
-/* wakeUp.css */
 .form-container {
   display: flex;
   flex-direction: column;
@@ -36,6 +35,7 @@
   padding: 0;
   scale: 1.1;
   transition: 0.3s;
+  margin-left: 10px;
 }
 
 .animate-increment {
