@@ -45,6 +45,7 @@ const Div = styled.div`
   z-index: ${({ isVisible }) => (isVisible ? 1 : -1)};
   opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
   height: 450px;
+  max-height: 550px;
 `;
 
 const Input = () => {
