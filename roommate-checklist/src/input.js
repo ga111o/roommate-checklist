@@ -15,10 +15,11 @@ import WhenSleep from "./whenSleep";
 
 const slideIn = keyframes`
   from {
-    transform: translateX(100%);
+    transform: translateY(20px);
+    opacity: 0
   }
   to {
-    transform: translateX(0);
+    transform: translateY(0);
   }
 `;
 
@@ -237,8 +238,12 @@ const Input = () => {
         <h3>제 룸메는 이랬으면 좋겠어요!</h3>
 
         <div className="nextNprevButton">
-          <button onClick={handlePrev}>🔙</button>
-          <button onClick={handleNext}>🔜</button>
+          <button className="Button" onClick={handlePrev}>
+            🔙
+          </button>
+          <button className="Button" onClick={handleNext}>
+            🔜
+          </button>
         </div>
       </Div>
       <Div isVisible={currentStep === 3}>
@@ -250,8 +255,12 @@ const Input = () => {
           onChange={handleNameChange}
         />
         <div className="nextNprevButton">
-          <button onClick={handlePrev}>🔙</button>
-          <button onClick={handleNext}>🔜</button>
+          <button className="Button" onClick={handlePrev}>
+            🔙
+          </button>
+          <button className="Button" onClick={handleNext}>
+            🔜
+          </button>
         </div>
       </Div>
 
