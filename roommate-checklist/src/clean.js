@@ -1,4 +1,4 @@
-import "./clean.css";
+import "./smoking.css";
 import React, { useState, useEffect } from "react";
 
 const Clean = () => {
@@ -42,7 +42,7 @@ const Clean = () => {
       return (
         <div>
           <div>🗑️</div>
-          <div className="output">더러워도 돼요.</div>
+          <div className="output">더러워도 괜찮아요.</div>
         </div>
       );
     } else {
